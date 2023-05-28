@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     private Vector2 input;
 
-   
+    public LayerMask solidObjectsLayer, pokemonLayer;
     private Animator _animator;
 
 
@@ -40,7 +40,10 @@ public class PlayerController : MonoBehaviour
                 targetPositon.y += input.y;
 
                 //transform.position = targetPositon;
-                StartCoroutine(MoveTowards(targetPositon));
+                if (IsAvailable(targetPositon)){
+                    StartCoroutine(MoveTowards(targetPositon));
+                    print("Move");
+                }
             }
         }
         
@@ -63,6 +66,27 @@ public class PlayerController : MonoBehaviour
         transform.position = destination;
 
         isMoving = false; 
+
+        checkForPokemon();
+    }
+
+    private bool IsAvailable(Vector3 target){
+        
+        if(Physics2D.OverlapCircle(target, 0.1f, solidObjectsLayer) != null){
+            return false;            
+        }
+
+        return true;
+    }
+
+    private void checkForPokemon(){
+        
+        if(Physics2D.OverlapCircle(transform.position, 0.1f, pokemonLayer) != null){
+            if(Random.Range(0,100) < 15){
+                Debug.Log("Empezar batalla pokemon");
+            }
+        }
+
     }
 
 }

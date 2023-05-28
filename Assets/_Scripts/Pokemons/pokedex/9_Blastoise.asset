@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4127ec0b5f3d76b4ab0a338f9adfa767, type: 3}
+  m_Name: 9_Blastoise
+  m_EditorClassIdentifier: 
+  ID: 9
+  name: Blastoise
+  description: "Blastoise, the Shellfish Pok\xE9mon. The evolved form of Wartortle.
+    Blastoise's strength lies in its power, rather than its speed. Its shell is like
+    armor and attacks from the hydro cannon on its back are virtually unstoppable. "
+  frontSprite: {fileID: 21300000, guid: c81aa1d11e24cc645ac737fe317a215e, type: 3}
+  backSprite: {fileID: 21300000, guid: 174691b76088a98478a967bed2005a26, type: 3}
+  type1: 0
+  type2: 0
+  maxHp: 79
+  attack: 83
+  defense: 100
+  spAttack: 85
+  spDefense: 85
+  speed: 100
+  learnableMoves:
+  - move: {fileID: 11400000, guid: 0df4bbe5cc96def439213bd97c4f0b2b, type: 2}
+    level: 1
+  - move: {fileID: 11400000, guid: a2683b639ee5a0f44ad37b576ea7ea5f, type: 2}
+    level: 5
+  - move: {fileID: 11400000, guid: 17dc2e5a791b08b44a265b9877bebfd7, type: 2}
+    level: 7

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4127ec0b5f3d76b4ab0a338f9adfa767, type: 3}
+  m_Name: 7_Squirtle
+  m_EditorClassIdentifier: 
+  ID: 7
+  name: Squirtle
+  description: "Squirtle. This Tiny Turtle Pok\xE9mon draws its long neck into its
+    shell to launch incredible Water attacks with amazing range and accuracy. The
+    blasts can be quite powerful. "
+  frontSprite: {fileID: 21300000, guid: eaf7e6ed7347ff24e9e124e72dd5bd30, type: 3}
+  backSprite: {fileID: 21300000, guid: 52c6079987b7dd24590676abadc721b1, type: 3}
+  type1: 3
+  type2: 0
+  maxHp: 44
+  attack: 48
+  defense: 65
+  spAttack: 50
+  spDefense: 50
+  speed: 43
+  learnableMoves:
+  - move: {fileID: 11400000, guid: 0df4bbe5cc96def439213bd97c4f0b2b, type: 2}
+    level: 1
+  - move: {fileID: 11400000, guid: a2683b639ee5a0f44ad37b576ea7ea5f, type: 2}
+    level: 5
+  - move: {fileID: 11400000, guid: 17dc2e5a791b08b44a265b9877bebfd7, type: 2}
+    level: 7

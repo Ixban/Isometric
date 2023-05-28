@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4127ec0b5f3d76b4ab0a338f9adfa767, type: 3}
+  m_Name: 2_Ivysaur
+  m_EditorClassIdentifier: 
+  ID: 2
+  name: Ivysaur
+  description: "The Seed Pok\xE9mon, Ivysaur, Bulbasaur's evolved form. The bulb
+    on its back absorbs nourishment and blooms into a large flower"
+  frontSprite: {fileID: 21300000, guid: 84ebaeb354c3eb34b8de0d8e5fe10a91, type: 3}
+  backSprite: {fileID: 21300000, guid: f9c7597cf2b1751458f516eba7bb5c4b, type: 3}
+  type1: 5
+  type2: 8
+  maxHp: 60
+  attack: 62
+  defense: 62
+  spAttack: 80
+  spDefense: 80
+  speed: 45
+  learnableMoves:
+  - move: {fileID: 11400000, guid: 0df4bbe5cc96def439213bd97c4f0b2b, type: 2}
+    level: 1
+  - move: {fileID: 11400000, guid: a2683b639ee5a0f44ad37b576ea7ea5f, type: 2}
+    level: 5
+  - move: {fileID: 11400000, guid: 5d2543889a1f5504ab73065b5204bf70, type: 2}
+    level: 7
