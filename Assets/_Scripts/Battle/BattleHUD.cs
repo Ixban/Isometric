@@ -10,10 +10,17 @@ public class BattleHUD : MonoBehaviour
     public HealthBar healthbar;
     public Text pokemonHealth;
 
+    private Pokemon _pokemon;
+
     public void SetPokemonData(Pokemon pokemon){
+        _pokemon = pokemon;
         pokemonName.text = pokemon.Base.Name;
         pokemonLevel.text = $"LV: {pokemon.Level}";
-        healthbar.SetHP(pokemon.HP / pokemon.MaxHp);
-        pokemonHealth.text = $"{pokemon.HP}/{pokemon.MaxHp}";
+        UpdatePokemonData();
+    }
+
+    public void UpdatePokemonData(){
+        StartCoroutine( healthbar.SetSmoothHp((float)_pokemon.HP / _pokemon.MaxHp) ); 
+        pokemonHealth.text = $"{_pokemon.HP}/{_pokemon.MaxHp}";
     }
 }

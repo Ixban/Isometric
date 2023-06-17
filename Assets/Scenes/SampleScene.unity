@@ -6042,7 +6042,7 @@ MonoBehaviour:
   enemyHUB: {fileID: 340977152}
   battleDialogBox: {fileID: 1182681726}
   state: 0
-  timeBeetweenClicks: 1
+  timeBeetweenClicks: 0.7
 --- !u!1 &691651748
 GameObject:
   m_ObjectHideFlags: 0
@@ -6133,7 +6133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _base: {fileID: 11400000, guid: 393d7b065abced74b855c09059941884, type: 2}
-  _level: 6
+  _level: 7
   isPlayer: 1
 --- !u!1 &826686380
 GameObject:
@@ -9766,8 +9766,10 @@ MonoBehaviour:
   - {fileID: 860763695}
   ppText: {fileID: 1719289997}
   typeText: {fileID: 1387105985}
+  timeToWaitAfterTex: 1
   charactersPersecond: 10
   selectedColor: {r: 0.5424528, g: 0.8238427, b: 1, a: 1}
+  isWriting: 0
 --- !u!1 &1311414135
 GameObject:
   m_ObjectHideFlags: 0

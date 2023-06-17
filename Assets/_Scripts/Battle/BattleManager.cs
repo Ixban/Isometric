@@ -33,11 +33,13 @@ public class BattleManager : MonoBehaviour
         playerUnit.SetupPokemon();
         playerHUB.SetPokemonData(playerUnit.Pokemon);
 
+        battleDialogBox.SetPokemonMovements(playerUnit.Pokemon.Moves);
+
         enemyUnit.SetupPokemon();
         enemyHUB.SetPokemonData(enemyUnit.Pokemon);
 
         yield return battleDialogBox.SetDialog($"Un {enemyUnit.Pokemon.Base.Name} salvaje apareció.");
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
         if(enemyUnit.Pokemon.Speed > playerUnit.Pokemon.Speed){
             StartCoroutine(battleDialogBox.SetDialog("El enemigo ataca primero"));
@@ -50,25 +52,58 @@ public class BattleManager : MonoBehaviour
 
         state = BattleState.PlayerSelectAction;
         StartCoroutine(battleDialogBox.SetDialog("Selecciona una acción"));
+        battleDialogBox.ToggleDialogText(true);
         battleDialogBox.ToggleActions(true);
+        battleDialogBox.ToggleMovements(false);
         currentSelectedAction = 0;
         battleDialogBox.SelectAction(currentSelectedAction);
 
     }
 
-    void EnemyAction(){
-        print("Enemy");
+    void PlayerMovement(){
+        state = BattleState.PlayerMove;
+        battleDialogBox.ToggleDialogText(false);
+        battleDialogBox.ToggleActions(false);
+        battleDialogBox.ToggleMovements(true);
+        currentSelectedMovement = 0;
+        battleDialogBox.SelectMovement(currentSelectedMovement, playerUnit.Pokemon.Moves[currentSelectedMovement]);
+    }
+
+    IEnumerator EnemyAction(){
+        state = BattleState.EnemyMove;
+
+        Move move = enemyUnit.Pokemon.RandomMove();
+        yield return battleDialogBox.SetDialog($"{enemyUnit.Pokemon.Base.Name} ha usado {move.Base.Name}");
+
+        bool pokemonFainted = playerUnit.Pokemon.ReceiveDamage(enemyUnit.Pokemon, move);
+
+        playerHUB.UpdatePokemonData();
+
+        if(pokemonFainted){
+            yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} ha sido debilitado");
+        }
+        else{
+            PlayerAction();
+        }
     }
 
     private void Update(){
         timeSinceLastClick += Time.deltaTime;
+
+        if(battleDialogBox.isWriting){
+            return;
+        }
         if (state == BattleState.PlayerSelectAction){
             HandlePlayerActionSelection();
+        }
+        else if(state == BattleState.PlayerMove){
+            HandlePlayerMovementSelection();
         }
     }
 
     private int currentSelectedAction;
     private float timeSinceLastClick;
+
     public float timeBeetweenClicks = 1.0f;
 
     void HandlePlayerActionSelection(){
@@ -90,12 +125,73 @@ public class BattleManager : MonoBehaviour
         {
             timeSinceLastClick = 0;
             if(currentSelectedAction == 0){
-                
+                PlayerMovement();
             }
             else if (currentSelectedAction == 1){
                 
             }
         }
+
+    }
+
+    private int currentSelectedMovement;
+    void HandlePlayerMovementSelection(){
+        if(timeSinceLastClick < timeBeetweenClicks){
+            return;
+        }
+
+        if(Input.GetAxisRaw("Vertical") != 0){
+            timeSinceLastClick = 0;
+
+            var oldSelectedMovement = currentSelectedMovement;
+            currentSelectedMovement = (currentSelectedMovement + 2) % 4;
+
+            if(currentSelectedMovement >= playerUnit.Pokemon.Moves.Count){
+                currentSelectedMovement = oldSelectedMovement;
+            }
+
+            
+            battleDialogBox.SelectMovement(currentSelectedMovement, playerUnit.Pokemon.Moves[currentSelectedMovement]);
+        }
+
+        else if(Input.GetAxisRaw("Horizontal") != 0){
+            timeSinceLastClick = 0;
+
+            var oldSelectedMovement = currentSelectedMovement;
+            
+            if (currentSelectedMovement <= 1){
+                currentSelectedMovement = (currentSelectedMovement + 1) % 2;
+            }else{
+                currentSelectedMovement = (currentSelectedMovement - 1) % 2 + 2;
+            }
+
+            if(currentSelectedMovement >= playerUnit.Pokemon.Moves.Count){
+                currentSelectedMovement = oldSelectedMovement;
+            }
+            battleDialogBox.SelectMovement(currentSelectedMovement, playerUnit.Pokemon.Moves[currentSelectedMovement]);
+        }
+
+        if(Input.GetAxisRaw("Submit") != 0){
+            timeSinceLastClick = 0;
+            battleDialogBox.ToggleMovements(false);
+            battleDialogBox.ToggleDialogText(true);
+            StartCoroutine(PerfomPlayerMovement());
+
+        }
+    }
+
+
+    IEnumerator PerfomPlayerMovement(){
+        Move move = playerUnit.Pokemon.Moves[currentSelectedMovement];
+        yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} ha usado {move.Base.Name}");
+
+        bool pokemonFainted = enemyUnit.Pokemon.ReceiveDamage(playerUnit.Pokemon, move);
+        enemyHUB.UpdatePokemonData();
+        if(pokemonFainted){
+            yield return battleDialogBox.SetDialog($"{enemyUnit.Pokemon.Base.Name} se ha debilitado");
+        }else{
+            StartCoroutine(EnemyAction());
+        }    
 
     }
 
