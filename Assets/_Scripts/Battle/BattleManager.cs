@@ -69,24 +69,6 @@ public class BattleManager : MonoBehaviour
         battleDialogBox.SelectMovement(currentSelectedMovement, playerUnit.Pokemon.Moves[currentSelectedMovement]);
     }
 
-    IEnumerator EnemyAction(){
-        state = BattleState.EnemyMove;
-
-        Move move = enemyUnit.Pokemon.RandomMove();
-        yield return battleDialogBox.SetDialog($"{enemyUnit.Pokemon.Base.Name} ha usado {move.Base.Name}");
-
-        bool pokemonFainted = playerUnit.Pokemon.ReceiveDamage(enemyUnit.Pokemon, move);
-
-        playerHUB.UpdatePokemonData();
-
-        if(pokemonFainted){
-            yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} ha sido debilitado");
-        }
-        else{
-            PlayerAction();
-        }
-    }
-
     private void Update(){
         timeSinceLastClick += Time.deltaTime;
 
@@ -185,14 +167,49 @@ public class BattleManager : MonoBehaviour
         Move move = playerUnit.Pokemon.Moves[currentSelectedMovement];
         yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} ha usado {move.Base.Name}");
 
+        var oldHPVal = enemyUnit.Pokemon.HP;
+
+        playerUnit.PlayAttackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        enemyUnit.PlayReceiveAttackAnimation();
+
         bool pokemonFainted = enemyUnit.Pokemon.ReceiveDamage(playerUnit.Pokemon, move);
-        enemyHUB.UpdatePokemonData();
+        enemyHUB.UpdatePokemonData(oldHPVal);
+
         if(pokemonFainted){
             yield return battleDialogBox.SetDialog($"{enemyUnit.Pokemon.Base.Name} se ha debilitado");
+            enemyUnit.PlayFaintAnimation();
         }else{
             StartCoroutine(EnemyAction());
         }    
 
+    }
+
+    IEnumerator EnemyAction(){
+        state = BattleState.EnemyMove;
+
+        Move move = enemyUnit.Pokemon.RandomMove();
+        yield return battleDialogBox.SetDialog($"{enemyUnit.Pokemon.Base.Name} ha usado {move.Base.Name}");
+
+        var oldHPVal = playerUnit.Pokemon.HP;
+
+        enemyUnit.PlayAttackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        playerUnit.PlayReceiveAttackAnimation();
+
+        bool pokemonFainted = playerUnit.Pokemon.ReceiveDamage(enemyUnit.Pokemon, move);
+
+        playerHUB.UpdatePokemonData(oldHPVal);
+
+        if(pokemonFainted){
+            yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} ha sido debilitado");
+            playerUnit.PlayFaintAnimation();
+        }
+        else{
+            PlayerAction();
+        }
     }
 
 }
